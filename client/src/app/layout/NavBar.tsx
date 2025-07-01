@@ -1,6 +1,8 @@
-import { AppBar, Badge, Box, IconButton, List, ListItem, Toolbar, Typography } from "@mui/material";
+import { AppBar, Badge, Box, IconButton, LinearProgress, List, ListItem, Toolbar, Typography } from "@mui/material";
 import { DarkMode, LightMode, ShoppingCart } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { setDarkMode } from "./uSlice";
 
 const midLinks = [
   {title: 'catalog', path: '/catalog'},
@@ -11,22 +13,31 @@ const midLinks = [
 const rightLinks = [
   {title: 'login', path: '/login'},
   {title:'register', path:'/register'},
-
 ]
 
-interface Props {
-  darkMode: boolean;
-  onToggleDarkMode: () => void;
+const navStyles = {
+  color: 'inherit', 
+  typography: 'h6',
+  textDecoration:'none',
+  '&:hover': {
+    color: 'grey.500'
+  },
+  '&.active': {
+    color: '#baecf9'
+  }
 }
 
-export default function NavBar({darkMode, onToggleDarkMode }: Props) {
+
+export default function NavBar() {
+  const {isLoading, darkMode} = useAppSelector(state => state.ui);
+  const dispatch = useAppDispatch();
 
   return (
     <AppBar position="fixed">
         <Toolbar sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
           <Box display='flex' alignItems='center'>
             <Typography component={NavLink} to='/' variant="h6">RE-STORE</Typography>
-            <IconButton onClick={onToggleDarkMode}>
+            <IconButton onClick={() => dispatch(setDarkMode())}>
                {darkMode ? <DarkMode/> : <LightMode sx={{color: 'yellow'}}/>}
             </IconButton>
           </Box>
@@ -37,17 +48,7 @@ export default function NavBar({darkMode, onToggleDarkMode }: Props) {
                   component={NavLink}
                   to={path}
                   key={path}
-                  sx={{
-                    color: 'inherit', 
-                    typography: 'h6',
-                    textDecoration:'none',
-                    '&:hover': {
-                    color: 'grey.500'
-                    },
-                    '&.active': {
-                    color: 'secondary.main'
-                    }
-                  }}
+                  sx={navStyles}
                 >
                     {title.toUpperCase()}
                 </ListItem>
@@ -86,6 +87,11 @@ export default function NavBar({darkMode, onToggleDarkMode }: Props) {
 
           </Box>
         </Toolbar>
+        {isLoading && (
+          <Box sx={{width: '100%'}}>
+            <LinearProgress color="secondary" />
+          </Box>
+        )}
     </AppBar>
   )
 }
