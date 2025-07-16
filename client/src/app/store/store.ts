@@ -8,6 +8,7 @@ import { basketApi } from "../../feaatures/basket/basketApi";
 import { catalogSlice } from "../../feaatures/catalog/catalogSlice";
 import { accountApi } from "../../feaatures/account/accountApi";
 import { checkoutApi } from "../../feaatures/checkout/CheckoutApi";
+import { orderApi } from "../../feaatures/orders/orderApi";
 
 export function configureTherStore() {
     return legacy_createStore(counterReducer)
@@ -19,6 +20,7 @@ export const store =configureStore({
         [errorApi.reducerPath]:errorApi.reducer,
         [basketApi.reducerPath]: basketApi.reducer,
         [accountApi.reducerPath]: accountApi.reducer,
+        [orderApi.reducerPath]: orderApi.reducer,
         [checkoutApi.reducerPath]: checkoutApi.reducer,
 
         counter: counterSlice.reducer,
@@ -31,10 +33,11 @@ export const store =configureStore({
             errorApi.middleware,
             basketApi.middleware,
             accountApi.middleware,
-            checkoutApi.middleware
+            checkoutApi.middleware,
+            orderApi.middleware
         )
 });
-
+ 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
