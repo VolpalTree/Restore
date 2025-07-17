@@ -18,7 +18,7 @@ export default function CheckoutStepper() {
     const [createOrder] = useCreateOrderMutation();
     const {basket} = useBasket();
     const { data, isLoading } = useFetchAddresQuery();
-    const { name = "", ...restAddress } = data ?? {};
+    // const { name = "", ...restAddress } = data ?? {};
     const [updateAddress] = useUpdateUserAddressMutation();
     const [savedAddressChecked, setSaveAddressChecked] = useState(false);
     const elements = useElements();
@@ -29,7 +29,10 @@ export default function CheckoutStepper() {
     const [submitting, setSubmitting] = useState(false);
     const {total, clearBasket} = useBasket();
     const [confirmationToken, setConfirmationToken] = useState<ConfirmationToken | null>(null);
-
+    let name, restAddress;
+    if (data) {
+        ({name, ...restAddress} = data);
+    }
     const handleNext = async () => {
         if (activeStepper === 0 && savedAddressChecked && elements) {
             const address = await getStripeAddress();
