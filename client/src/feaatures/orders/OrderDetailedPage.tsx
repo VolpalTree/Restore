@@ -104,7 +104,7 @@ export default function OrderDetailedPage() {
                                 </TableCell>
 
                                 <TableCell align="center" sx={{ p: 4 }}>
-                                    {currencyFormat(item.price)}
+                                    {currencyFormat(item.price * item.quantity)}
                                 </TableCell>
                             </TableRow>
                         )}
